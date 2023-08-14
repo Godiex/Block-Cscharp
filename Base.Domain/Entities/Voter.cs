@@ -15,9 +15,9 @@ public class Voter : EntityBase<Guid>
         Origin = origin;
     }
 
-    public bool IsUnderAge => ((new DateTime((DateTime.Now - this.DateOfBirth).Ticks).Year) - 1) < MinimumAge;
+    public bool IsUnderAge => ((new DateTime((DateTime.Now - DateOfBirth).Ticks).Year) - 1) < MinimumAge;
 
-    public bool CanVoteBasedOnLocation => this.Origin.ToUpper(System.Globalization.CultureInfo.InvariantCulture) == CountryOfOrigin;
+    public bool CanVoteBasedOnLocation => Origin.ToUpper(System.Globalization.CultureInfo.InvariantCulture) == CountryOfOrigin;
 
     public string Nid { get; init; }
     public DateTime DateOfBirth { get; init; }

@@ -38,11 +38,12 @@ public sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
                 ForbiddenException => (int)HttpStatusCode.Forbidden,
                 AlreadyExistException => (int)HttpStatusCode.BadRequest,
                 ConflictException => (int)HttpStatusCode.Conflict,
+                CustomException => (int)HttpStatusCode.BadRequest,
                 _ => (int)HttpStatusCode.InternalServerError
             };
 
             _Logger.LogError(context.Exception, context.Exception.Message, context.Exception.StackTrace);
-            errorResponse = new ValidationErrorResponse(context.HttpContext.Response.StatusCode, context.Exception.Message, context.Exception.InnerException);
+            errorResponse = new ValidationErrorResponse(context.HttpContext.Response.StatusCode, context.Exception.Message, new []{ context.Exception.InnerException.Message });
         }
 
         context.Result = new ObjectResult(errorResponse);

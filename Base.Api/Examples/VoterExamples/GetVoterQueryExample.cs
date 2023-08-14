@@ -1,6 +1,4 @@
-﻿using Base.Application.UseCases.Voters.Commands;
-using Base.Application.UseCases.Voters.Commands.VoterRegister;
-using Base.Application.UseCases.Voters.Queries.GetVoter;
+﻿using Base.Application.UseCases.Voters.Queries.GetVoter;
 
 namespace Base.Api.Examples.VoterExamples
 {

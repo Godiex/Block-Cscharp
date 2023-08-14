@@ -1,5 +1,4 @@
-﻿using Base.Application.UseCases.Voters.Commands;
-using Base.Application.UseCases.Voters.Commands.VoterRegister;
+﻿using Base.Application.UseCases.Voters.Commands.VoterRegister;
 
 namespace Base.Api.Examples.VoterExamples
 {
@@ -11,7 +10,7 @@ namespace Base.Api.Examples.VoterExamples
             var voterCommand = new VoterRegisterCommand(
                 "12342212",
                 "Colombia",
-                DateTime.Now.AddYears(-16)
+                DateTime.Now.AddYears(-19)
             );
             yield return SwaggerExample.Create("voterRegisterCommand", voterCommand);
         }
