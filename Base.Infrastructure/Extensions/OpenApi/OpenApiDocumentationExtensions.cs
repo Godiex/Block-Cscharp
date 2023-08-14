@@ -28,7 +28,7 @@ public static class OpenApiDocumentationExtensions {
                 {
                     Name = "Finotex",
                     Email = "infousa@finotex.com",
-                    Url = companyUrl is null ? null : new Uri(companyUrl)
+                    Url = new Uri(companyUrl)
                 }
             });
 

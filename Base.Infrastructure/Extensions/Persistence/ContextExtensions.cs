@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Base.Infrastructure.Extensions.Persistense;
+namespace Base.Infrastructure.Extensions.Persistence;
 
 public static class ContextExtensions {
     public static IServiceCollection AddContextDatabase(this IServiceCollection svc, IConfiguration config) {

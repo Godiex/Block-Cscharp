@@ -1,7 +1,8 @@
 using System.Net;
+using Base.Application.Common.Exceptions;
 using Base.Domain.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace Base.Api.Filters;
 
@@ -19,20 +20,32 @@ public sealed class AppExceptionFilterAttribute : ExceptionFilterAttribute
     public override void OnException(ExceptionContext context)
     {
         if (context == null) return;
-        context.HttpContext.Response.StatusCode = context.Exception switch
+
+        object errorResponse;
+
+        if (context.Exception is ValidationException validationException)
         {
-            CoreBusinessException => ((int)HttpStatusCode.BadRequest),
-            _ => ((int)HttpStatusCode.InternalServerError)
-        };
-
-        _Logger.LogError(context.Exception, context.Exception.Message, new[] { context.Exception.StackTrace });
-
-        var msg = new
+            context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            var errors = validationException.Errors.Select(e => e.ErrorMessage).ToArray();
+            errorResponse = new ValidationErrorResponse((int)HttpStatusCode.BadRequest, "Errores de validación", errors);
+        }
+        else
         {
-            context.Exception.Message
-        };
+            context.HttpContext.Response.StatusCode = context.Exception switch
+            {
+                CoreBusinessException => (int)HttpStatusCode.BadRequest,
+                NotFoundException => (int)HttpStatusCode.NotFound,
+                ForbiddenException => (int)HttpStatusCode.Forbidden,
+                AlreadyExistException => (int)HttpStatusCode.BadRequest,
+                ConflictException => (int)HttpStatusCode.Conflict,
+                _ => (int)HttpStatusCode.InternalServerError
+            };
 
-        context.Result = new ObjectResult(msg);
+            _Logger.LogError(context.Exception, context.Exception.Message, context.Exception.StackTrace);
+            errorResponse = new ValidationErrorResponse(context.HttpContext.Response.StatusCode, context.Exception.Message, context.Exception.InnerException);
+        }
+
+        context.Result = new ObjectResult(errorResponse);
     }
 
 }

@@ -1,8 +1,7 @@
-using Base.Application.UseCases.Voters.Queries.GetVoter;
 using Base.Domain.Entities;
 using Base.Domain.Ports;
 
-namespace Application.Voters;
+namespace Base.Application.UseCases.Voters.Queries.GetVoter;
 
 public class VoterQueryHandler : IRequestHandler<VoterQuery, List<VoterDto>>
 {

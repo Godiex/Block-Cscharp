@@ -1,4 +1,4 @@
-﻿namespace Epm.Renovables.Maestros.Api.Filtros
+﻿namespace Base.Api.Filters
 {
     /// <summary>
     /// Response to validation of request
@@ -6,6 +6,7 @@
     /// <param name="Code"></param>
     /// <param name="Message"></param>
     /// <param name="Errors"></param>
-    /// <param name="InnerMessage"></param>
-    public record ValidationErrorResponse(int Code, string Message, ILookup<string, string> Errors, object? InnerMessage);
+    
+    public record ValidationErrorResponse(int Code, string Message, string[] Errors);
+
 }

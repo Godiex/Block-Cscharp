@@ -1,7 +1,8 @@
 using Base.Api.Examples.VoterExamples;
+using Base.Api.Filters;
 using Base.Application.UseCases.Voters.Commands;
+using Base.Application.UseCases.Voters.Commands.VoterRegister;
 using Base.Application.UseCases.Voters.Queries.GetVoter;
-using Epm.Renovables.Maestros.Api.Filtros;
 
 namespace Base.Api.Controllers;
 
@@ -22,7 +23,7 @@ public class VoterController
     /// </remarks>
     /// <param name="command">Create a voter </param>
     /// <returns>VoterDto info of voter</returns>
-    /// <response code="201">Register sucefully</response>
+    /// <response code="201">Register successfully</response>
     /// <response code="400">parameters validation fails</response>
     [HttpPost]
     [SwaggerRequestExample(typeof(VoterRegisterCommand), typeof(VoterRegisterCommandExample))]

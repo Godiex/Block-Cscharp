@@ -1,9 +1,8 @@
-﻿using Base.Infrastructure.Extensions.Cors;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EDB.SurveySys.Infrastructure.Cors;
+namespace Base.Infrastructure.Extensions.Cors;
 
 public static class CorsExtensions
 {

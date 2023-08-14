@@ -2,7 +2,7 @@
 using Base.Domain.Entities;
 using Base.Domain.Services;
 
-namespace Base.Application.UseCases.Voters.Commands;
+namespace Base.Application.UseCases.Voters.Commands.VoterRegister;
 
 public class VoterRegisterCommandHandler : IRequestHandler<VoterRegisterCommand, VoterDto>
 {

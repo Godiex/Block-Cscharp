@@ -6,8 +6,7 @@ namespace Base.Infrastructure.Adapters;
 
 public class Messaging : IMessaging
 {
-
-    readonly IConnection _brokerConn = default!;
+    private readonly IConnection _brokerConn;
 
     public Messaging(IEnumerable<IConnection> conn) =>
         _brokerConn = conn.First(f => f.ClientProvidedName.Contains("WRITE", StringComparison.InvariantCulture));

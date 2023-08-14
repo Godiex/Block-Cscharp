@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Base.Application.UseCases.Voters.Commands
+namespace Base.Application.UseCases.Voters.Commands.VoterRegister
 {
     public class VoterRegisterValidator : AbstractValidator<VoterRegisterCommand>
     {

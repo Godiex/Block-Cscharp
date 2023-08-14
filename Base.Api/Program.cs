@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Base.Api.Filters;
 using Base.Infrastructure.Context;
 using Base.Infrastructure.Extensions;

@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Base.Infrastructure.Extensions.Persistense;
+namespace Base.Infrastructure.Extensions.Persistence;
 
 public static class PersistenceExtensions {
     public static IServiceCollection AddPersistence(this IServiceCollection svc, IConfiguration config) {

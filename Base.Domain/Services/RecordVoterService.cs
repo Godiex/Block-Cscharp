@@ -8,7 +8,7 @@ namespace Base.Domain.Services;
 public class RecordVoterService
 {
     private readonly IGenericRepository<Voter> _voterRepository;
-    const string VOTER_ORIGIN = "Colombia";
+    private const string VoterOrigin = "Colombia";
 
     public RecordVoterService(IGenericRepository<Voter> voterRepository) =>
         _voterRepository = voterRepository;
@@ -33,7 +33,7 @@ public class RecordVoterService
     {
         if (!v.CanVoteBasedOnLocation)
         {
-            throw new WrongCountryException($"Voter is not from {VOTER_ORIGIN}");
+            throw new WrongCountryException($"Voter is not from {VoterOrigin}");
         }
     }
 }

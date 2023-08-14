@@ -1,10 +1,11 @@
+using Base.Infrastructure.Extensions.Cors;
 using Base.Infrastructure.Extensions.Log;
+using Base.Infrastructure.Extensions.Mapper;
 using Base.Infrastructure.Extensions.Mediator;
 using Base.Infrastructure.Extensions.Messaging;
 using Base.Infrastructure.Extensions.OpenApi;
-using Base.Infrastructure.Extensions.Persistense;
+using Base.Infrastructure.Extensions.Persistence;
 using Base.Infrastructure.Extensions.Service;
-using EDB.SurveySys.Infrastructure.Cors;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

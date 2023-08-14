@@ -7,12 +7,12 @@ namespace Base.Api.Examples.VoterExamples
     {
         public IEnumerable<SwaggerExample<VoterDto>> GetExamples()
         {
-            var alarmaRequest = new VoterDto(
+            var voterDto = new VoterDto(
                 Guid.NewGuid(),
                 DateTime.Now.AddYears(-16),
                 "Colombia"
             );
-            yield return SwaggerExample.Create("crearAlarmaRequest", alarmaRequest);
+            yield return SwaggerExample.Create("crearAlarmaRequest", voterDto);
         }
     }
 }

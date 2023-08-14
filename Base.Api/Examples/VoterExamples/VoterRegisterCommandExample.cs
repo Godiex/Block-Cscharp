@@ -1,5 +1,5 @@
 ﻿using Base.Application.UseCases.Voters.Commands;
-using Base.Application.UseCases.Voters.Queries.GetVoter;
+using Base.Application.UseCases.Voters.Commands.VoterRegister;
 
 namespace Base.Api.Examples.VoterExamples
 {
@@ -8,12 +8,12 @@ namespace Base.Api.Examples.VoterExamples
     {
         public IEnumerable<SwaggerExample<VoterRegisterCommand>> GetExamples()
         {
-            var alarmaDto = new VoterRegisterCommand(
+            var voterCommand = new VoterRegisterCommand(
                 "12342212",
                 "Colombia",
                 DateTime.Now.AddYears(-16)
             );
-            yield return SwaggerExample.Create("voterRegisterCommand", alarmaDto);
+            yield return SwaggerExample.Create("voterRegisterCommand", voterCommand);
         }
     }
 }
