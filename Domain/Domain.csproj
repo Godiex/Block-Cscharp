@@ -7,4 +7,19 @@
       <UserSecretsId>d37fc7f2-7b9a-4c40-9fe2-eda04a432db6</UserSecretsId>
   </PropertyGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Messages.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Messages.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Messages.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

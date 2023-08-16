@@ -8,7 +8,6 @@ namespace Domain.Services;
 public class RecordVoterService
 {
     private readonly IGenericRepository<Voter> _voterRepository;
-    private const string VoterOrigin = "Colombia";
 
     public RecordVoterService(IGenericRepository<Voter> voterRepository) =>
         _voterRepository = voterRepository;
@@ -25,7 +24,7 @@ public class RecordVoterService
     {
         if (v.IsUnderAge)
         {
-            throw new UnderAgeException("Voter is not 18 years or older");
+            throw new UnderAgeException(Messages.UnderAgeException);
         }
     }
 
@@ -33,7 +32,7 @@ public class RecordVoterService
     {
         if (!v.CanVoteBasedOnLocation)
         {
-            throw new WrongCountryException($"Voter is not from {VoterOrigin}");
+            throw new WrongCountryException(Messages.WrongCountryException);
         }
     }
 }
