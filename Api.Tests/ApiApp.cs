@@ -1,10 +1,10 @@
-﻿using Base.Infrastructure.Context;
+﻿using Infrastructure.Context;
+using Infrastructure.Context;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 
 namespace Api.Tests;
 

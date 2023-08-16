@@ -1,7 +1,7 @@
-using Base.Domain.Entities;
-using Base.Domain.Exceptions;
-using Base.Domain.Ports;
-using Base.Domain.Services;
+using Domain.Entities;
+using Domain.Exceptions;
+using Domain.Ports;
+using Domain.Services;
 
 namespace Domain.Tests;
 

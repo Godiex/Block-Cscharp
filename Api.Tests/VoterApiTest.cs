@@ -1,10 +1,10 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
-using Base.Application.UseCases.Voters.Commands.VoterRegister;
-using Base.Application.UseCases.Voters.Queries.GetVoter;
-using Base.Domain.Entities;
-using Base.Domain.Ports;
+using Application.UseCases.Voters.Commands.VoterRegister;
+using Application.UseCases.Voters.Queries.GetVoter;
+using Domain.Entities;
+using Domain.Ports;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Api.Tests;
@@ -52,7 +52,7 @@ public class VoterApiTest
                 await using var webApp = new ApiApp();                                
                 VoterRegisterCommand voter = new("123456789", "Colombia", DateTime.Now.AddYears(-16));                                              
                 var client = webApp.CreateClient();
-                request = await client.PostAsJsonAsync<VoterRegisterCommand>("/api/voter/",voter);                
+                request = await client.PostAsJsonAsync("/api/voter/",voter);                
                 request.EnsureSuccessStatusCode();                
                 Assert.Fail("There's no way to get here if voter is underage");
             }
