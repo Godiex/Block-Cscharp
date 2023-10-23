@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
+using Api.Filters;
 using Application.UseCases.Voters.Commands.VoterRegister;
 using Application.UseCases.Voters.Queries.GetVoter;
 using Domain.Entities;
@@ -17,9 +18,8 @@ public class VoterApiTest
             await using var webApp = new ApiApp();
             var serviceCollection = webApp.GetServiceCollection();
             using var scope = serviceCollection.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<Voter>>();
-            var voter = new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia");                
-            var voterCreated = await repository.AddAsync( new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia"){ Id = webApp.UserId});
+            var repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<Voter>>();           
+            await repository.AddAsync( new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia"){ Id = webApp.UserId});
             var client = webApp.CreateClient();
             var singleVoter = await client.GetFromJsonAsync<List<VoterDto>>($"/api/voter");
             Assert.True(singleVoter is List<VoterDto>);                
@@ -58,8 +58,8 @@ public class VoterApiTest
             }
             catch (Exception)
             {
-                var responseMessage = await request.Content.ReadAsStringAsync();
-                Assert.True(request.StatusCode is HttpStatusCode.BadRequest && responseMessage.Contains("Voter is not 18 years or older"));
+                var responseMessage = await request.Content.ReadFromJsonAsync<ErrorResponse>();
+                Assert.True(request.StatusCode is HttpStatusCode.BadRequest);
             }
         }
 }

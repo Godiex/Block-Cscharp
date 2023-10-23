@@ -4,141 +4,140 @@ using Domain.Ports;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Adapters {
+namespace Infrastructure.Adapters;
 
-    public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
+public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
+{
+    private readonly PersistenceContext _context;
+    public GenericRepository(PersistenceContext context)
     {
-        private readonly PersistenceContext _context;
-        public GenericRepository(PersistenceContext context)
-        {
-            _context = context;
-        }
+        _context = context;
+    }
 
-        public async Task<E> AddAsync(E entity)
+    public async Task<E> AddAsync(E entity)
+    {
+        _ = entity ?? throw new ArgumentNullException(nameof(entity),"Entity can not be null");
+        _context.Set<E>().Add(entity);
+        await CommitAsync();
+        return entity;
+    }
+
+    public async Task DeleteAsync(E entity)
+    {
+        if (entity != null)
         {
-            _ = entity ?? throw new ArgumentNullException(nameof(entity),"Entity can not be null");
-            _context.Set<E>().Add(entity);
+            entity.SetDelete();
+            _context.Set<E>().Update(entity);
             await CommitAsync();
-            return entity;
+        }
+    }
+
+    public async Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null, Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null, string includeStringProperties = "", bool isTracking = false)
+    {
+        IQueryable<E> query = _context.Set<E>();
+
+        if (filter != null)
+        {
+            query = query.Where(filter);
         }
 
-        public async Task DeleteAsync(E entity)
+        if (!string.IsNullOrEmpty(includeStringProperties))
         {
-            if (entity != null)
+            foreach (var includeProperty in includeStringProperties.Split
+                         (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
             {
-                entity.SetDelete();
-                _context.Set<E>().Update(entity);
-                await CommitAsync();
+                query = query.Include(includeProperty);
             }
         }
 
-        public async Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null, Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null, string includeStringProperties = "", bool isTracking = false)
+        if (orderBy != null)
         {
-             IQueryable<E> query = _context.Set<E>();
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (!string.IsNullOrEmpty(includeStringProperties))
-            {
-                foreach (var includeProperty in includeStringProperties.Split
-                    (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-                {
-                    query = query.Include(includeProperty);
-                }
-            }
-
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync().ConfigureAwait(false);
-            }
-
-            return (!isTracking) ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
+            return await orderBy(query).ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null, Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null, bool isTracking = false, params Expression<Func<E, object>>[] includeObjectProperties)
+        return (!isTracking) ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
+    }
+
+    public async Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null, Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null, bool isTracking = false, params Expression<Func<E, object>>[] includeObjectProperties)
+    {
+        IQueryable<E> query = _context.Set<E>();
+
+        if (filter != null)
         {
-            IQueryable<E> query = _context.Set<E>();
-
-            if (filter != null)
-            {
-                query = query.Where(filter);
-            }
-
-            if (includeObjectProperties != null)
-            {
-                foreach (Expression<Func<E, object>> include in includeObjectProperties)
-                {
-                    query = query.Include(include);
-                }
-            }
-
-            if (orderBy != null)
-            {
-                return await orderBy(query).ToListAsync();
-            }
-
-            return (!isTracking) ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
+            query = query.Where(filter);
         }
 
-        public async Task<E> GetByIdAsync(object id)
+        if (includeObjectProperties != null)
         {
-           return await _context.Set<E>().FindAsync(id);
-        }
-
-        public async Task<bool> Exist(Expression<Func<E, bool>> filter)
-        {
-            return await _context.Set<E>().AnyAsync(filter);
-        }
-
-        public async Task UpdateAsync(E entity)
-        {
-            if (entity != null)
+            foreach (Expression<Func<E, object>> include in includeObjectProperties)
             {
-                _context.Set<E>().Update(entity);
-                await CommitAsync();
+                query = query.Include(include);
             }
         }
 
-        private async Task CommitAsync()
+        if (orderBy != null)
         {
-            _context.ChangeTracker.DetectChanges();
+            return await orderBy(query).ToListAsync();
+        }
 
-            foreach (var entry in _context.ChangeTracker.Entries())
+        return (!isTracking) ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
+    }
+
+    public async Task<E> GetByIdAsync(object id)
+    {
+        return await _context.Set<E>().FindAsync(id);
+    }
+
+    public async Task<bool> Exist(Expression<Func<E, bool>> filter)
+    {
+        return await _context.Set<E>().AnyAsync(filter);
+    }
+
+    public async Task UpdateAsync(E entity)
+    {
+        if (entity != null)
+        {
+            _context.Set<E>().Update(entity);
+            await CommitAsync();
+        }
+    }
+
+    private async Task CommitAsync()
+    {
+        _context.ChangeTracker.DetectChanges();
+
+        foreach (var entry in _context.ChangeTracker.Entries())
+        {
+            switch (entry.State)
             {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Property("CreatedOn").CurrentValue = DateTime.UtcNow;
-                        break;
-                    case EntityState.Modified:
-                        entry.Property("LastModifiedOn").CurrentValue = DateTime.UtcNow;
-                        break;
-                    case EntityState.Detached:
-                        break;
-                    case EntityState.Unchanged:
-                        break;
-                    case EntityState.Deleted:
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
+                case EntityState.Added:
+                    entry.Property("CreatedOn").CurrentValue = DateTime.UtcNow;
+                    break;
+                case EntityState.Modified:
+                    entry.Property("LastModifiedOn").CurrentValue = DateTime.UtcNow;
+                    break;
+                case EntityState.Detached:
+                    break;
+                case EntityState.Unchanged:
+                    break;
+                case EntityState.Deleted:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
-
-            await _context.CommitAsync().ConfigureAwait(false);
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        await _context.CommitAsync().ConfigureAwait(false);
+    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            this._context.Dispose();
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        this._context.Dispose();
     }
 }

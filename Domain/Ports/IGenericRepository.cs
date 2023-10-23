@@ -19,6 +19,5 @@ namespace Domain.Ports
         Task UpdateAsync(E entity);
         Task DeleteAsync(E entity);
         Task<bool> Exist(Expression<Func<E, bool>> filter);
-
     }
 }
