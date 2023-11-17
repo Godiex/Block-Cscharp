@@ -22,14 +22,30 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
         return entity;
     }
 
-    public async Task DeleteAsync(E entity)
+    public async Task DeleteAsync(ISoftDelete entity, bool deleteCascade = true)
     {
-        if (entity != null)
+        if (entity is { DeletedOn: not null })
         {
-            entity.SetDelete();
-            _context.Set<E>().Update(entity);
-            await CommitAsync();
+            return;
         }
+
+        entity.SetDelete();
+
+        if (deleteCascade)
+        {
+            var relatedEntities = entity.GetType()
+                .GetProperties()
+                .Where(prop => typeof(ISoftDelete).IsAssignableFrom(prop.PropertyType))
+                .Select(prop => prop.GetValue(entity) as ISoftDelete);
+
+            foreach (var relatedEntity in relatedEntities)
+            {
+                if (relatedEntity is { DeletedOn: null }) await DeleteAsync(relatedEntity);
+            }
+
+        }
+
+        await CommitAsync();
     }
 
     public async Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null, Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null, string includeStringProperties = "", bool isTracking = false)

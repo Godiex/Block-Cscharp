@@ -17,7 +17,7 @@ namespace Domain.Ports
 
         Task<E> AddAsync(E entity);
         Task UpdateAsync(E entity);
-        Task DeleteAsync(E entity);
+        Task DeleteAsync(ISoftDelete entity, bool deleteCascade = true);
         Task<bool> Exist(Expression<Func<E, bool>> filter);
     }
 }

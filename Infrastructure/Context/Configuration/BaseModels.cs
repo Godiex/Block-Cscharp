@@ -20,5 +20,27 @@ public class GymConfig : IEntityTypeConfiguration<Voter>
         builder
             .Property(x => x.Nid)
             .HasMaxLength(50);
+
+        builder
+            .HasOne(v => v.Test)
+            .WithOne()
+            .HasForeignKey<Voter>(v => v.TestId);
+    }
+    
+    
+}
+
+public class TestConfig : IEntityTypeConfiguration<Test>
+{
+    public void Configure(EntityTypeBuilder<Test> builder)
+    {
+        builder
+            .ToTable("Test", SchemaNames.Base);
+
+        builder
+            .Property(x => x.Name)
+            .IsRequired()
+            .HasMaxLength(50);
+
     }
 }

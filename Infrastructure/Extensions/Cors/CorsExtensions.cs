@@ -10,6 +10,7 @@ public static class CorsExtensions
 
     public static IServiceCollection AddCorsPolicy(this IServiceCollection services, IConfiguration config)
     {
+        services.Configure<CorsSettings>(config.GetSection(nameof(CorsSettings)));
         var corsSettings = config.GetSection(nameof(CorsSettings)).Get<CorsSettings>();
         var origins = new List<string>();
         if (corsSettings.Angular is not null)
@@ -22,6 +23,8 @@ public static class CorsExtensions
                     .WithOrigins(origins.ToArray())));
     }
 
-    public static IApplicationBuilder UseCorsPolicy(this IApplicationBuilder app) =>
+    public static void UseCorsPolicy(this IApplicationBuilder app)
+    {
         app.UseCors(CorsPolicy);
+    }
 }
