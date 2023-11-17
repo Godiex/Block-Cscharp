@@ -1,5 +1,5 @@
 using Infrastructure.Extensions.Cors;
-using Infrastructure.Extensions.Log;
+using Infrastructure.Extensions.Logs;
 using Infrastructure.Extensions.Mapper;
 using Infrastructure.Extensions.Mediator;
 using Infrastructure.Extensions.Messaging;
@@ -24,11 +24,11 @@ public static class Startup
             .AddMediator()
             .AddMapper()
             .AddContextDatabase(config)
-            .AddCors()
+            .AddCorsPolicy(config)
             .AddLogger()
             .AddPersistence(config)
             .AddDomainServices()
-            .AddRabbitSupport(config);
+            .AddMessageSupport(config);
     }
 
     public static void UseInfrastructure(this IApplicationBuilder builder, IWebHostEnvironment env)

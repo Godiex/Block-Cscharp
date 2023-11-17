@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Extensions
+﻿namespace Infrastructure
 {
     public static class ApiConstants
     {

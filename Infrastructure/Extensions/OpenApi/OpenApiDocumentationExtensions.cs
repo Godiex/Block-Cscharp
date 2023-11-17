@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -39,7 +38,6 @@ public static class OpenApiDocumentationExtensions {
 
     public static IApplicationBuilder UseOpenApiDocumentation(this IApplicationBuilder app, IWebHostEnvironment env)
     {
-        if (!env.IsDevelopment() && !env.IsEnvironment(ApiConstants.LocalEnviroment)) return app;
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Block Api"));
         return app;

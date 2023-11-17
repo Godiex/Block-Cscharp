@@ -21,5 +21,17 @@ public class Voter : EntityBase<Guid>
     public string Nid { get; init; }
     public DateTime DateOfBirth { get; init; }
     public string Origin { get; init; }
+
+    public Guid TestId { get; set; }
+    public virtual Test? Test { get; set; }
+}
+
+public class Test : EntityBase<Guid>
+{
+    public string Name { get; set; }
+    public Test(string name)
+    {
+        Name = name;
+    }
 }
 

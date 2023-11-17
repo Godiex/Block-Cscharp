@@ -1,5 +1,4 @@
 using Api.Examples.VoterExamples;
-using Api.Examples.VoterExamples;
 using Api.Filters;
 using Application.UseCases.Voters.Commands.VoterRegister;
 using Application.UseCases.Voters.Queries.GetVoter;

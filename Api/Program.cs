@@ -1,19 +1,20 @@
 using Api.Filters;
-using Infrastructure.Context;
+using Infrastructure;
 using Infrastructure.Extensions;
-using Infrastructure.Inicialize;
+using Infrastructure.Extensions.Persistence;
 using Prometheus;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
-
 if (builder.Environment.IsEnvironment(ApiConstants.LocalEnviroment))
 {
     config.AddUserSecrets<Program>();
 }
 
-builder.Services.AddHealthChecks().AddSqlServer(config["ConnectionStrings:database"]);
+builder.Services.Configure<DatabaseSettings>(config.GetSection(nameof(DatabaseSettings)));
+var settings = config.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
+builder.Services.AddHealthChecks().AddSqlServer(settings.ConnectionString);
 builder.Services.AddControllers(opts => opts.Filters.Add(typeof(AppExceptionFilterAttribute)));
 builder.Services.AddInfrastructure(config);
 
@@ -32,11 +33,6 @@ app.UseRouting().UseHttpMetrics().UseEndpoints(endpoints =>
 });
 
 app.UseInfrastructure(app.Environment);
-
-using var scope = app.Services.GetService<IServiceScopeFactory>()?.CreateScope();
-var contex = scope!.ServiceProvider.GetRequiredService<PersistenceContext>();
-var start = new Start(contex);
-start.Inicializar();
 
 app.UseHttpLogging();
 app.UseHttpsRedirection();

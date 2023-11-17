@@ -17,8 +17,10 @@ public class VoterRegisterCommandHandler : IRequestHandler<VoterRegisterCommand,
     
     public async Task<VoterDto> Handle(VoterRegisterCommand request, CancellationToken cancellationToken)
     {
+        var voter = new Voter(request.Nid, request.Dob, request.Origin);
+        voter.Test = new Test("hola");
         var voterSaved =   await _service.RecordVoterAsync(
-            new Voter(request.Nid, request.Dob, request.Origin)
+            voter
         );
         return _mapper.Map<VoterDto>(voterSaved);
     }

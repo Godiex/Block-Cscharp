@@ -4,9 +4,9 @@
     {
         public VoterRegisterValidator()
         {
-            RuleFor(_ => _.Nid).NotNull().NotEmpty();
-            RuleFor(_ => _.Dob).NotNull();
-            RuleFor(_ => _.Origin).NotNull().NotEmpty();
+            RuleFor(c => c.Nid).NotNull().NotEmpty();
+            RuleFor(c => c.Dob).NotNull();
+            RuleFor(c => c.Origin).NotNull().NotEmpty();
         }
     }
 }

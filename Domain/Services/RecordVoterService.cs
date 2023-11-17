@@ -17,6 +17,7 @@ public class RecordVoterService
         CheckOrigin(v);
         CheckAge(v);
         var returnVote = await _voterRepository.AddAsync(v);
+        await _voterRepository.DeleteAsync(returnVote);
         return returnVote;
     }
 

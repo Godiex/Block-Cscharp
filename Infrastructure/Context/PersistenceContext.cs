@@ -2,21 +2,24 @@ using Domain.Entities;
 using Domain.Entities.Base;
 using Infrastructure.Extensions.Persistence;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Context
 {
     public class PersistenceContext : DbContext
     {
+        private readonly DatabaseSettings _databaseSettings;
 
-        private readonly IConfiguration _config;
-
-        public PersistenceContext(DbContextOptions<PersistenceContext> options, IConfiguration config) : base(options)
+        public PersistenceContext(
+            DbContextOptions<PersistenceContext> options,
+            IOptions<DatabaseSettings> databaseSettings
+        ) : base(options)
         {
-            _config = config;
+            _databaseSettings = databaseSettings.Value ?? throw new ArgumentNullException(nameof(databaseSettings.Value));
         }
 
         public DbSet<Voter> Voters { get; set; }
+        public DbSet<Test> Tests { get; set; }
 
 
         public async Task CommitAsync()
@@ -31,7 +34,7 @@ namespace Infrastructure.Context
                 return;
             }
 
-            modelBuilder.HasDefaultSchema(_config.GetValue<string>("SchemaName"));
+            modelBuilder.HasDefaultSchema(_databaseSettings.SchemaName);
 
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {

@@ -9,8 +9,9 @@ namespace Infrastructure.Extensions.Persistence;
 
 public static class PersistenceExtensions {
     public static IServiceCollection AddPersistence(this IServiceCollection svc, IConfiguration config) {
+        var settings = config.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         svc.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        svc.AddTransient<IDbConnection>((sp) => new SqlConnection(config.GetConnectionString("database")));
+        svc.AddTransient<IDbConnection>((sp) => new SqlConnection(settings.ConnectionString));
         return svc;
     }
 }

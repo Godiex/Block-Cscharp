@@ -57,7 +57,7 @@ public class RecordVoterTests
         }
         catch (WrongCountryException wce)
         {
-            Assert.True(wce.Message.Equals($"Voter is not from Colombia"));
+            Assert.True(wce.Message.Equals(Messages.WrongCountryException));
         }
     }
 
