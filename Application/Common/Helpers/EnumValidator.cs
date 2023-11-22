@@ -9,15 +9,10 @@ public static class EnumValidator
         return Enum.TryParse(value, true, out result );
     }
 
-    public static bool ValidValueForEnum<T>(List<string>? values)
+    public static bool ValidValueForEnum<T>(IEnumerable<string> values)
         where T : struct
     {
         T result;
-        foreach (var x in values)
-        {
-            if (!ValidValueForEnum<T>(x)) return false;
-        }
-
-        return true;
+        return values.All(ValidValueForEnum<T>);
     }
 }
