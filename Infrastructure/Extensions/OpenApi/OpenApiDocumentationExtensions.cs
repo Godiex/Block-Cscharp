@@ -1,6 +1,5 @@
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
@@ -36,7 +35,7 @@ public static class OpenApiDocumentationExtensions {
         });
     }
 
-    public static IApplicationBuilder UseOpenApiDocumentation(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static IApplicationBuilder UseOpenApiDocumentation(this IApplicationBuilder app)
     {
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Block Api"));

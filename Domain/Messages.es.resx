@@ -12,18 +12,18 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="AlredyExistException" xml:space="preserve">
-        <value>test1</value>
+        <value>Recurso repetido</value>
+    </data>
+    <data name="EntityCannotBeNull" xml:space="preserve">
+        <value>La entidad no puede ser null</value>
     </data>
     <data name="ResourceNotFoundException" xml:space="preserve">
-        <value>test2</value>
+        <value>No se encontro el recurso {0}</value>
     </data>
     <data name="UnderAgeException" xml:space="preserve">
-        <value>test3</value>
+        <value>No puede ser menor de edad</value>
     </data>
     <data name="WrongCountryException" xml:space="preserve">
-        <value>test4</value>
-    </data>
-    <data name="EntityCanotBeNull" xml:space="preserve">
-        <value>La entidad no puede ser null</value>
+        <value>Pais no admitido</value>
     </data>
 </root>

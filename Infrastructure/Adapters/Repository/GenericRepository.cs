@@ -17,7 +17,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
     public async Task<E> AddAsync(E entity)
     {
-        _ = entity ?? throw new ArgumentNullException(nameof(entity),Messages.EntityCanotBeNull);
+        _ = entity ?? throw new ArgumentNullException(nameof(entity), Messages.EntityCannotBeNull);
         _context.Set<E>().Add(entity);
         await CommitAsync();
         return entity;

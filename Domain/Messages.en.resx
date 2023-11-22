@@ -1,11 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-
 <root>
-    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-        <xsd:element name="root" msdata:IsDataSet="true">
-
-        </xsd:element>
-    </xsd:schema>
     <resheader name="resmimetype">
         <value>text/microsoft-resx</value>
     </resheader>
@@ -19,18 +12,18 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="AlredyExistException" xml:space="preserve">
-        <value>Recurso repetido</value>
+        <value>Alredy exist resource</value>
     </data>
     <data name="EntityCannotBeNull" xml:space="preserve">
-        <value>La entidad no puede ser null</value>
+        <value>entity cannot be null</value>
     </data>
     <data name="ResourceNotFoundException" xml:space="preserve">
-        <value>No se encontro el recurso {0}</value>
+        <value>Not found the resource {0}</value>
     </data>
     <data name="UnderAgeException" xml:space="preserve">
-        <value>No puede ser menor de edad default</value>
+        <value>No can be a child</value>
     </data>
     <data name="WrongCountryException" xml:space="preserve">
-        <value>Pais no admitido</value>
+        <value>Country not valid</value>
     </data>
 </root>

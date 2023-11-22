@@ -22,7 +22,7 @@ public class VoterApiTest
             await repository.AddAsync( new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia"));
             var client = webApp.CreateClient();
             var singleVoter = await client.GetFromJsonAsync<List<VoterDto>>($"/api/voter");
-            Assert.True(singleVoter is List<VoterDto>);                
+            Assert.True(singleVoter != null);                
         }
 
 

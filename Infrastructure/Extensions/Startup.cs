@@ -1,4 +1,5 @@
 using Infrastructure.Extensions.Cors;
+using Infrastructure.Extensions.Localization;
 using Infrastructure.Extensions.Logs;
 using Infrastructure.Extensions.Mapper;
 using Infrastructure.Extensions.Mediator;
@@ -8,7 +9,6 @@ using Infrastructure.Extensions.Persistence;
 using Infrastructure.Extensions.Service;
 using Infrastructure.Extensions.Validation;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +19,7 @@ public static class Startup
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration config)
     {
         services
+            .AddLocalizationMessages()
             .AddOpenApiDocumentation()
             .AddValidation()
             .AddMediator()
@@ -31,10 +32,11 @@ public static class Startup
             .AddMessageSupport(config);
     }
 
-    public static void UseInfrastructure(this IApplicationBuilder builder, IWebHostEnvironment env)
+    public static void UseInfrastructure(this IApplicationBuilder builder)
     {
         builder
-            .UseOpenApiDocumentation(env)
+            .UseLocalizationMessages()
+            .UseOpenApiDocumentation()
             .UseCorsPolicy();
     }
 }

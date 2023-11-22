@@ -1,6 +1,7 @@
 using Api.Filters;
 using Infrastructure;
 using Infrastructure.Extensions;
+using Infrastructure.Extensions.Localization;
 using Infrastructure.Extensions.Persistence;
 using Prometheus;
 using Serilog;
@@ -12,6 +13,7 @@ if (builder.Environment.IsEnvironment(ApiConstants.LocalEnviroment))
     config.AddUserSecrets<Program>();
 }
 
+builder.Services.AddSingleton<LocalizationMiddleware>();
 builder.Services.Configure<DatabaseSettings>(config.GetSection(nameof(DatabaseSettings)));
 var settings = config.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
 builder.Services.AddHealthChecks().AddSqlServer(settings.ConnectionString);
@@ -25,14 +27,14 @@ Log.Logger = new LoggerConfiguration().Enrich.FromLogContext()
     .CreateLogger();
 
 var app = builder.Build();
+app.UseMiddleware<LocalizationMiddleware>();
 app.UseRouting().UseHttpMetrics().UseEndpoints(endpoints =>
 {
-    endpoints.MapGet("/palm/base-version", () => new { version = 1.0, by = "Finotex" });
     endpoints.MapMetrics();
     endpoints.MapHealthChecks("/health");
 });
 
-app.UseInfrastructure(app.Environment);
+app.UseInfrastructure();
 
 app.UseHttpLogging();
 app.UseHttpsRedirection();

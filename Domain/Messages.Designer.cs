@@ -71,9 +71,9 @@ namespace Domain {
         /// <summary>
         ///   Looks up a localized string similar to La entidad no puede ser null.
         /// </summary>
-        public static string EntityCanotBeNull {
+        public static string EntityCannotBeNull {
             get {
-                return ResourceManager.GetString("EntityCanotBeNull", resourceCulture);
+                return ResourceManager.GetString("EntityCannotBeNull", resourceCulture);
             }
         }
         
@@ -87,7 +87,7 @@ namespace Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No puede ser menor de edad.
+        ///   Looks up a localized string similar to No puede ser menor de edad default.
         /// </summary>
         public static string UnderAgeException {
             get {
@@ -96,7 +96,7 @@ namespace Domain {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to El pais no es correcto debe ser colombia.
+        ///   Looks up a localized string similar to Pais no admitido.
         /// </summary>
         public static string WrongCountryException {
             get {
