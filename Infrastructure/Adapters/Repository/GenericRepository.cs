@@ -41,9 +41,11 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
             foreach (var relatedEntity in relatedEntities)
             {
-                if (relatedEntity is { DeletedOn: null }) await DeleteAsync(relatedEntity);
+                if (relatedEntity is { DeletedOn: null } and not IAggregateRoot)
+                {
+                    await DeleteAsync(relatedEntity);
+                }
             }
-
         }
 
         await CommitAsync();

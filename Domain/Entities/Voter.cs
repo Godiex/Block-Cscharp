@@ -2,7 +2,7 @@
 
 namespace Domain.Entities;
 
-public class Voter : EntityBase<Guid>
+public class Voter : EntityBase<Guid>, IAggregateRoot
 {
     private const int MinimumAge = 18;
     private const string CountryOfOrigin = "COLOMBIA";

@@ -1,7 +1,10 @@
-namespace Domain.Entities.Base
+namespace Domain.Entities.Base;
+
+public interface IEntityBase
 {
-    public interface IEntityBase<T>
-    {
-        T Id { get; }
-    }
+}
+
+public interface IEntityBase<T> : IEntityBase
+{
+    T Id { get; }
 }
