@@ -11,12 +11,12 @@ namespace Domain.Ports
 
         Task<IEnumerable<E>> GetAsync(Expression<Func<E, bool>>? filter = null,
             Func<IQueryable<E>, IOrderedQueryable<E>>? orderBy = null,
-             bool isTracking = false, params Expression<Func<E, object>>[] includeObjectProperties);
+             bool isTracking = false, params Expression<Func<E, object>>[]? includeObjectProperties);
 
-        Task<E> GetByIdAsync(object id);
+        Task<E?> GetByIdAsync(object? id);
 
         Task<E> AddAsync(E entity);
-        Task UpdateAsync(E entity);
+        Task UpdateAsync(E? entity);
         Task DeleteAsync(ISoftDelete entity, bool deleteCascade = true);
         Task<bool> Exist(Expression<Func<E, bool>> filter);
     }

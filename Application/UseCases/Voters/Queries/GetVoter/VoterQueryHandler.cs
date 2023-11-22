@@ -1,20 +1,21 @@
+using Application.Common.Helpers.Pagination;
+using Application.Ports;
 using Domain.Entities;
-using Domain.Ports;
 
 namespace Application.UseCases.Voters.Queries.GetVoter;
 
-public class VoterQueryHandler : IRequestHandler<VoterQuery, List<VoterDto>>
+public class VoterQueryHandler : IRequestHandler<VoterPaginatedQuery, PaginationResponse<VoterDto>>
 {
-    private readonly IGenericRepository<Voter> _repository;
-    private readonly IMapper _mapper;
+    private readonly IReadRepository<Voter> _repository;
 
-    public VoterQueryHandler(IGenericRepository<Voter> repository, IMapper mapper) =>
-        (_repository, _mapper) = (repository, mapper);
+    public VoterQueryHandler(IReadRepository<Voter> repository) =>
+        _repository = repository;
 
 
-    public async Task<List<VoterDto>> Handle(VoterQuery request, CancellationToken cancellationToken)
+    public async Task<PaginationResponse<VoterDto>> Handle(VoterPaginatedQuery query, CancellationToken cancellationToken)
     {
-        var voter = (await _repository.GetAsync()).ToList();
-        return _mapper.Map<List<VoterDto>>(voter);
+        var spec = new GetVotersSpec();
+        var votersPaginated = await _repository.PaginatedListAsync(spec, query.PageNumber, query.PageSize, cancellationToken);
+        return votersPaginated;
     }
 }

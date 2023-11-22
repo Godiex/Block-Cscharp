@@ -30,4 +30,7 @@
     <data name="WrongCountryException" xml:space="preserve">
         <value>El pais no es correcto debe ser colombia</value>
     </data>
+    <data name="EntityCanotBeNull" xml:space="preserve">
+        <value>La entidad no puede ser null</value>
+    </data>
 </root>

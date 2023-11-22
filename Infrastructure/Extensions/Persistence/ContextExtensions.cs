@@ -7,7 +7,7 @@ namespace Infrastructure.Extensions.Persistence;
 
 public static class ContextExtensions
 {
-    public static IServiceCollection AddContextDatabase(this IServiceCollection svc, IConfiguration config) {
+    public static IServiceCollection AddPersistence(this IServiceCollection svc, IConfiguration config) {
         var settings = config.GetSection(nameof(DatabaseSettings)).Get<DatabaseSettings>();
         svc.AddDbContext<PersistenceContext>(opt =>
         {

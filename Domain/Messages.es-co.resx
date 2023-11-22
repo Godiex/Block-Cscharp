@@ -23,4 +23,7 @@
     <data name="WrongCountryException" xml:space="preserve">
         <value>test4</value>
     </data>
+    <data name="EntityCanotBeNull" xml:space="preserve">
+        <value>La entidad no puede ser null</value>
+    </data>
 </root>

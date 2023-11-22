@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
+using Domain;
 using Domain.Entities.Base;
 using Domain.Ports;
 using Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace Infrastructure.Adapters;
+namespace Infrastructure.Adapters.Repository;
 
 public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 {
@@ -16,7 +17,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
     public async Task<E> AddAsync(E entity)
     {
-        _ = entity ?? throw new ArgumentNullException(nameof(entity),"Entity can not be null");
+        _ = entity ?? throw new ArgumentNullException(nameof(entity),Messages.EntityCanotBeNull);
         _context.Set<E>().Add(entity);
         await CommitAsync();
         return entity;
@@ -59,11 +60,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
         if (!string.IsNullOrEmpty(includeStringProperties))
         {
-            foreach (var includeProperty in includeStringProperties.Split
-                         (new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
-            {
-                query = query.Include(includeProperty);
-            }
+            query = includeStringProperties.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
 
         if (orderBy != null)
@@ -85,10 +82,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
         if (includeObjectProperties != null)
         {
-            foreach (Expression<Func<E, object>> include in includeObjectProperties)
-            {
-                query = query.Include(include);
-            }
+            query = includeObjectProperties.Aggregate(query, (current, include) => current.Include(include));
         }
 
         if (orderBy != null)
@@ -99,7 +93,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
         return (!isTracking) ? await query.AsNoTracking().ToListAsync() : await query.ToListAsync();
     }
 
-    public async Task<E> GetByIdAsync(object id)
+    public async Task<E?> GetByIdAsync(object? id)
     {
         return await _context.Set<E>().FindAsync(id);
     }
@@ -109,7 +103,7 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
         return await _context.Set<E>().AnyAsync(filter);
     }
 
-    public async Task UpdateAsync(E entity)
+    public async Task UpdateAsync(E? entity)
     {
         if (entity != null)
         {
@@ -154,6 +148,6 @@ public class GenericRepository<E> : IGenericRepository<E> where E : DomainEntity
 
     protected virtual void Dispose(bool disposing)
     {
-        this._context.Dispose();
+        _context.Dispose();
     }
 }

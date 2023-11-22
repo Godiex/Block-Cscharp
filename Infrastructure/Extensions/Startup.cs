@@ -23,10 +23,10 @@ public static class Startup
             .AddValidation()
             .AddMediator()
             .AddMapper()
-            .AddContextDatabase(config)
+            .AddPersistence(config)
             .AddCorsPolicy(config)
             .AddLogger()
-            .AddPersistence(config)
+            .AddRepositories(config)
             .AddDomainServices()
             .AddMessageSupport(config);
     }

@@ -7,6 +7,11 @@ public class Voter : EntityBase<Guid>
     private const int MinimumAge = 18;
     private const string CountryOfOrigin = "COLOMBIA";
 
+    public Voter()
+    {
+
+    }
+
     public Voter(string nid, DateTime dateOfBirth, string origin)
     {
         Nid = nid.Length >= 8 ? nid : throw new CoreBusinessException("the document requires at least 8 chars");

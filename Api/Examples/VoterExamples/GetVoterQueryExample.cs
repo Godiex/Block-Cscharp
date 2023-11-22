@@ -3,11 +3,11 @@
 namespace Api.Examples.VoterExamples
 {
     
-    public class GetVoterQueryExample : IMultipleExamplesProvider<VoterQuery>
+    public class GetVoterQueryExample : IMultipleExamplesProvider<VoterPaginatedQuery>
     {
-        public IEnumerable<SwaggerExample<VoterQuery>> GetExamples()
+        public IEnumerable<SwaggerExample<VoterPaginatedQuery>> GetExamples()
         {
-            var voterQuery = new VoterQuery();
+            var voterQuery = new VoterPaginatedQuery(1, 20);
             yield return SwaggerExample.Create("voterQuery", voterQuery);
         }
     }

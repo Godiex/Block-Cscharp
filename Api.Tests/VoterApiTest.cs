@@ -19,7 +19,7 @@ public class VoterApiTest
             var serviceCollection = webApp.GetServiceCollection();
             using var scope = serviceCollection.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IGenericRepository<Voter>>();           
-            await repository.AddAsync( new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia"){ Id = webApp.UserId});
+            await repository.AddAsync( new Voter("1234567890", DateTime.Now.AddYears(-18), "Colombia"));
             var client = webApp.CreateClient();
             var singleVoter = await client.GetFromJsonAsync<List<VoterDto>>($"/api/voter");
             Assert.True(singleVoter is List<VoterDto>);                

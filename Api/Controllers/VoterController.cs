@@ -1,5 +1,6 @@
 using Api.Examples.VoterExamples;
 using Api.Filters;
+using Application.Common.Helpers.Pagination;
 using Application.UseCases.Voters.Commands.VoterRegister;
 using Application.UseCases.Voters.Queries.GetVoter;
 
@@ -44,10 +45,13 @@ public class VoterController
     /// <response code="201">get voters successfully</response>
     /// <response code="400">parameters validation fails</response>
     [HttpGet]
-    [SwaggerRequestExample(typeof(VoterQuery), typeof(GetVoterQueryExample))]
-    [SwaggerResponseExample(StatusCodes.Status200OK, typeof(VoterRegisterResponseExample))]
+    [SwaggerRequestExample(typeof(VoterPaginatedQuery), typeof(GetVoterQueryExample))]
+    [SwaggerResponseExample(StatusCodes.Status200OK, typeof(PaginationResponse<VoterDto>))]
     [SwaggerResponseExample(400, typeof(ErrorResponse))]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(VoterDto), StatusCodes.Status200OK)]
-    public async Task<List<VoterDto>> Get() => await _mediator.Send(new VoterQuery());
+    [ProducesResponseType(typeof(PaginationResponse<VoterDto>), StatusCodes.Status200OK)]
+    public async Task<PaginationResponse<VoterDto>> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+    {
+        return await _mediator.Send(new VoterPaginatedQuery(pageNumber, pageSize));
+    }
 }
